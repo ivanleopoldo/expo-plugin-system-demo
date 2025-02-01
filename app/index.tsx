@@ -11,32 +11,46 @@ export default function Home() {
   const [value, setValue] = useState('');
 
   async function createPlugin(name: string) {
-    const plugins_dir = FileSystem.documentDirectory + 'plugins';
-    const plugin_file = plugins_dir + `/${name}`;
-    if (!(await FileSystem.getInfoAsync(plugins_dir)).exists) {
-      await FileSystem.makeDirectoryAsync(plugins_dir);
-    }
+    try {
+      const plugins_dir = FileSystem.documentDirectory + 'plugins';
+      const plugin_file = plugins_dir + `/${name}`;
+      await FileSystem.makeDirectoryAsync(plugins_dir + `/${name}`, { intermediates: true });
 
-    await FileSystem.writeAsStringAsync(
-      plugin_file,
-      `export default function run(){ alert('hello from ${name}') }`
-    );
+      await FileSystem.writeAsStringAsync(
+        plugin_file + '/index.js',
+        `module.exports = function run(){ console.log('hello from ${name}') }`
+      );
+      console.log('creating file');
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function runPlugins() {
-    const plugins_dir = FileSystem.documentDirectory + 'plugins';
-    for (const plugin of await FileSystem.readDirectoryAsync(plugins_dir)) {
-      const code = await FileSystem.readAsStringAsync(plugins_dir + `/${plugin}`);
-      const func = Function(
-        'require',
-        'module',
-        `const exports = module.exports = {}; 
-      ${code}; 
-      return exports.default`
-      );
+    try {
+      const plugins_dir = FileSystem.documentDirectory + 'plugins';
 
-      alert(func.toString());
+      for (const plugin of await FileSystem.readDirectoryAsync(plugins_dir)) {
+        const code = await FileSystem.readAsStringAsync(plugins_dir + `/${plugin}` + '/index.js');
+        const module = { exports: {} };
+        const func = new Function('module', code);
+
+        func(module);
+
+        if (typeof module.exports === 'function') {
+          module.exports();
+        } else {
+          console.warn(`No function exported from ${plugin}/index.js`);
+        }
+      }
+    } catch (err) {
+      console.error(err);
     }
+  }
+
+  async function deletePlugins() {
+    const plugins_dir = FileSystem.documentDirectory + 'plugins';
+    await FileSystem.deleteAsync(plugins_dir);
   }
 
   return (
@@ -68,10 +82,7 @@ export default function Home() {
             </Button>
           </View>
           <View className="flex-row gap-2">
-            <Button
-              className="w-1/2"
-              onPress={() => alert('deleteplugins')}
-              variant={'destructive'}>
+            <Button className="w-1/2" onPress={() => deletePlugins()} variant={'destructive'}>
               <Text>Delete All Plugins</Text>
             </Button>
           </View>
