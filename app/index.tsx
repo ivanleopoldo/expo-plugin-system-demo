@@ -6,6 +6,7 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import * as FileSystem from 'expo-file-system';
+import Toast from 'react-native-toast-message';
 
 export default function Home() {
   const [value, setValue] = useState('');
@@ -24,6 +25,7 @@ export default function Home() {
       ).then((res) => res.text());
 
       await FileSystem.writeAsStringAsync(plugin_file + '/index.js', code);
+      Toast.show({ type: 'success', text1: `Created Plugin: ${name}` });
     } catch (err) {
       console.error(err);
     }
@@ -54,6 +56,7 @@ export default function Home() {
   async function deletePlugins() {
     const plugins_dir = FileSystem.documentDirectory + 'plugins';
     await FileSystem.deleteAsync(plugins_dir);
+    Toast.show({ type: 'success', text1: 'All plugins deleted!' });
   }
 
   return (

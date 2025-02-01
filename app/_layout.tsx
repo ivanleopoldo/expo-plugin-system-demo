@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
-import { ThemeToggle } from '~/components/ToggleTheme';
+import Toast from 'react-native-toast-message';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -49,6 +49,7 @@ export default function RootLayout() {
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
       <Stack />
+      <Toast />
     </ThemeProvider>
   );
 }
