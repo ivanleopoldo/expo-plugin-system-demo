@@ -44,7 +44,8 @@ export default function Home() {
         func(module);
 
         if (typeof module.exports === 'function') {
-          module.exports(plugin);
+          const val = module.exports(plugin);
+          Toast.show({ type: 'success', text1: `Plugin: ${plugin}`, text2: val });
         } else {
           console.warn(`No function exported from ${plugin}/index.js`);
         }
