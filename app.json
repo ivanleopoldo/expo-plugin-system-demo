@@ -2,6 +2,7 @@
   "expo": {
     "name": "plugin-sys",
     "slug": "plugin-sys",
+    "newArchEnabled": true,
     "version": "1.0.0",
 
     "scheme": "plugin-sys",
@@ -20,7 +21,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
 
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
 
     "splash": {
       "image": "./assets/splash.png",
@@ -29,6 +30,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "userInterfaceStyle": "automatic",
       "supportsTablet": true
     },
     "android": {
