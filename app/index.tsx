@@ -37,8 +37,9 @@ export default function Home() {
 
       for (const plugin of await FileSystem.readDirectoryAsync(plugins_dir)) {
         const code = await FileSystem.readAsStringAsync(plugins_dir + `/${plugin}` + '/index.js');
+
         const module = { exports: {} };
-        const func = new Function('module', code);
+        const func = new Function('exports', 'module', 'console', code);
 
         func(module);
 

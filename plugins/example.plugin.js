@@ -1,3 +1,4 @@
+const toast = require('react-native-toast-message');
 module.exports = function run(name) {
-  console.log('hello from ' + name);
+  toast.show({ type: 'success', text1: 'hello from ' + name });
 };
