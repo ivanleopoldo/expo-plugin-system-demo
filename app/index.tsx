@@ -16,11 +16,14 @@ export default function Home() {
       const plugin_file = plugins_dir + `/${name}`;
       await FileSystem.makeDirectoryAsync(plugins_dir + `/${name}`, { intermediates: true });
 
-      await FileSystem.writeAsStringAsync(
-        plugin_file + '/index.js',
-        `module.exports = function run(){ console.log('hello from ${name}') }`
-      );
-      console.log('creating file');
+      const code = await fetch(
+        'https://raw.githubusercontent.com/ivanleopoldo/expo-plugin-system-demo/refs/heads/main/plugins/example.plugin.js',
+        {
+          headers: { pragma: 'no-cache', 'cache-control': 'no-cache' },
+        }
+      ).then((res) => res.text());
+
+      await FileSystem.writeAsStringAsync(plugin_file + '/index.js', code);
     } catch (err) {
       console.error(err);
     }
@@ -38,7 +41,7 @@ export default function Home() {
         func(module);
 
         if (typeof module.exports === 'function') {
-          module.exports();
+          module.exports(plugin);
         } else {
           console.warn(`No function exported from ${plugin}/index.js`);
         }
