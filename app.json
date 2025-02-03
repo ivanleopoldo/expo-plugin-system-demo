@@ -4,7 +4,6 @@
     "slug": "plugin-sys",
     "newArchEnabled": true,
     "version": "1.0.0",
-
     "scheme": "plugin-sys",
     "web": {
       "bundler": "metro",
@@ -14,15 +13,11 @@
     "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true,
-
       "tsconfigPaths": true
     },
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "automatic",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -31,12 +26,19 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "userInterfaceStyle": "automatic",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ivaintwc.pluginsys"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.ivaintwc.pluginsys"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8cffc134-e75f-4b3f-bc21-a9445f215c99"
       }
     }
   }
