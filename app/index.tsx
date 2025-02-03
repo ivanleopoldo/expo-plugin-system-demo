@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Keyboard, SafeAreaView, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeToggle } from '~/components/ToggleTheme';
 import { Button } from '~/components/ui/button';
@@ -71,6 +71,7 @@ export default function Home() {
       <Stack.Screen options={{ title: 'Home', headerRight: () => <ThemeToggle /> }} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView className="min-h-full w-full items-center justify-center gap-4">
+          <Text>{FileSystem.documentDirectory}</Text>
           <View className="flex-row gap-2">
             <Input
               placeholder="Plugin Name"
